@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 
 import { TaskItemComponent } from './task-item/task-item.component';
 import { TaskService } from '../../services/tasks.service';
+import { TaskStatusOptions, taskStatusOptionsToken } from '../task.model';
 
 @Component({
   selector: 'app-tasks-list',
@@ -9,12 +10,20 @@ import { TaskService } from '../../services/tasks.service';
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.css',
   imports: [TaskItemComponent],
+  providers:[
+    {
+      provide: taskStatusOptionsToken,
+      useValue: TaskStatusOptions,
+    }
+  ]
 })
 export class TasksListComponent {
   
   public selectedFilter = signal<string>('all');
   
   public taskSvc = inject(TaskService);
+
+  public taskStatusOptions  = inject(taskStatusOptionsToken);
 
   //create a switch case that is setUp against selectedFilter Signal & Tasks signal in  Service
   // Whenever the value of both or either signal changes the computed method runs
